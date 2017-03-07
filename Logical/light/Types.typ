@@ -2,9 +2,9 @@
 TYPE
 	StateLight : 
 		(
-		stateLightInit,
-		stateWakingUpLightOn,
-		stateWakingUpLightOff,
+		stateInit,
+		stateBeeingAwake,
+		stateSleeping,
 		stateFallingAsleep
 		);
 END_TYPE

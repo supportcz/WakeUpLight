@@ -5,4 +5,8 @@ VAR
 	button : BOOL;
 	oldButton : BOOL;
 	AsArLogWrite_0 : AsArLogWrite;
+	oldStateLight : StateLight;
+	stateEntered : BOOL;
+	buttonPressed : BOOL;
+	TP_0 : TP;
 END_VAR

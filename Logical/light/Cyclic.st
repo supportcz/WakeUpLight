@@ -1,61 +1,88 @@
 
 PROGRAM _CYCLIC
+
+	TP_0(IN := button <> oldButton, PT := T#500ms);
+	buttonPressed := EDGEPOS(TP_0.Q);
+	oldButton := button;
+	
 	CASE stateLight OF
 		
-		stateLightInit:		
-			stateLight := stateWakingUpLightOn;
-		
-		stateWakingUpLightOn:
-			light := TRUE;
+		stateInit:		
 
-			TON_0(IN := TRUE, PT := T#5m);			
-			IF TON_0.Q THEN
-				TON_0(IN := FALSE);
-				stateLight := stateWakingUpLightOff;
-			END_IF					
+			stateLight := stateBeeingAwake;
 		
-			IF button <> oldButton THEN
-				TON_0(IN := FALSE);
-
+		stateBeeingAwake:
+			
+			IF stateEntered THEN
 				AsArLogWrite_0.enable := TRUE;
-				AsArLogWrite_0.asciiString := ADR('light switched off');
-
+				AsArLogWrite_0.asciiString := ADR('beeing awake');
+			END_IF				
+			
+			IF buttonPressed THEN
 				stateLight := stateFallingAsleep;
+			END_IF
+		
+			light := TRUE;		
+
+		stateSleeping:
+
+			IF stateEntered THEN
+				AsArLogWrite_0.enable := TRUE;
+				AsArLogWrite_0.asciiString := ADR('sleeping');
+				light := TRUE;
+			END_IF				
+
+			IF light THEN
+				TON_0(IN := TRUE, PT := T#5m);	
+				IF TON_0.Q THEN
+					TON_0(IN := FALSE);
+					light := FALSE;
+				END_IF					
+			ELSE
+				TON_0(IN := TRUE, PT := T#15m);	
+				IF TON_0.Q THEN
+					TON_0(IN := FALSE);
+					light := TRUE;
+				END_IF
+			END_IF
+					
+			IF buttonPressed THEN
+				stateLight := stateBeeingAwake;
 			END_IF	
 
-		stateWakingUpLightOff:
-			light := FALSE;
+		stateFallingAsleep:			
 
-			TON_0(IN := TRUE, PT := T#15m);	
+			IF stateEntered THEN
+				AsArLogWrite_0.enable := TRUE;
+				AsArLogWrite_0.asciiString := ADR('falling asleep');
+			END_IF				
+
+			TON_0(IN := TRUE, PT := T#20m);	
+			
 			IF TON_0.Q THEN
-				TON_0(IN := FALSE);
-				stateLight := stateWakingUpLightOn;
+				stateLight := stateSleeping;
 			END_IF
 			
-			IF button <> oldButton THEN
-				stateLight := stateWakingUpLightOn;
-			END_IF	
-		
-		stateFallingAsleep:			
+			IF buttonPressed THEN
+				stateLight := stateBeeingAwake;
+			END_IF		
+
 			light := FALSE;
 
-			TON_0(IN := TRUE, PT := T#20m);		
-			IF TON_0.Q OR button <> oldButton THEN
-				TON_0(IN := FALSE);
-				
-				AsArLogWrite_0.enable := TRUE;
-				AsArLogWrite_0.asciiString := ADR('light switched on');
-				
-				stateLight := stateWakingUpLightOn;
-			END_IF
-		
 	END_CASE	
-	
-	AsArLogWrite_0(ident := arlogBASE_USER_LOG_IDENT, logLevel := arlogLEVEL_INFO);
+		
+	IF oldStateLight <> stateLight THEN
+		TON_0(IN := FALSE);
+		stateEntered := TRUE;
+	ELSE
+		stateEntered := FALSE;		
+	END_IF
+			
+	AsArLogWrite_0(ident := arlogBASE_USER_LOG_IDENT, mem:=ADR(stateLight), len:= SIZEOF(oldStateLight), logLevel := arlogLEVEL_INFO);
 	IF AsArLogWrite_0.status = 0 THEN
 		AsArLogWrite_0.enable := FALSE;
 	END_IF
 	
-	oldButton := button;
+	oldStateLight := stateLight;
 	 
 END_PROGRAM
