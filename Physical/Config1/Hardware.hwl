@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<BR.AS.HardwareTopology Version="0.0.0.1">
+  <Modules>
+    <Module Name="X20BM11" Type="X20BM11" X="284" Y="120" />
+    <Module Name="X20DO2649" Type="X20DO2649" X="284" Y="120" />
+    <Module Name="X20TB12" Type="X20TB12" X="284" Y="147" />
+    <Module Name="X20CP1381" Type="X20CP1381" X="120" Y="120" />
+    <Module Name="X3" Type="X3" X="271" Y="123" />
+    <Module Name="X20TB1F2" Type="X20TB1F" X="271" Y="146" />
+    <Module Name="X2" Type="X2" X="258" Y="123" />
+    <Module Name="X20TB1F1" Type="X20TB1F" X="258" Y="146" />
+    <Module Name="X1" Type="X1" X="245" Y="123" />
+    <Module Name="X20TB1F" Type="X20TB1F" X="245" Y="146" />
+  </Modules>
+  <Links />
+  <InfoElements />
+</BR.AS.HardwareTopology>

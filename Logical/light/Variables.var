@@ -1,0 +1,8 @@
+VAR
+	light : BOOL;
+	stateLight : StateLight;
+	TON_0 : TON;
+	button : BOOL;
+	oldButton : BOOL;
+	AsArLogWrite_0 : AsArLogWrite;
+END_VAR

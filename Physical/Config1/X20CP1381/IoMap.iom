@@ -1,0 +1,4 @@
+VAR_CONFIG
+	::light:light AT %QX."X20DO2649".DigitalOutput02;
+	::light:button AT %IX."X2".DigitalInput09;
+END_VAR
