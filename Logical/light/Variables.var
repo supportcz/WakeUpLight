@@ -9,4 +9,6 @@ VAR
 	stateEntered : BOOL;
 	buttonPressed : BOOL;
 	TP_0 : TP;
+	speedFactor : INT;
+	test : BOOL;
 END_VAR
