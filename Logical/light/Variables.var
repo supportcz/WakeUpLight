@@ -11,4 +11,7 @@ VAR
 	TP_0 : TP;
 	speedFactor : INT;
 	test : BOOL;
+	DTStructureGetTime_0 : DTStructureGetTime;
+	DTStructure1 : DTStructure;
+	nightHours : BOOL;
 END_VAR

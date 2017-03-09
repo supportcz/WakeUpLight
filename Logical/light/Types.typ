@@ -2,8 +2,8 @@
 TYPE
 	StateLight : 
 		(
-		stateInit,
-		stateBeeingAwake,
+		stateOutsideNightHours,
+		stateOutOfBed,
 		stateSleeping,
 		stateFallingAsleep
 		);

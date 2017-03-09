@@ -11,17 +11,42 @@ PROGRAM _CYCLIC
 	buttonPressed := EDGEPOS(TP_0.Q);
 	oldButton := button;
 	
+	DTStructureGetTime_0(enable := 1, pDTStructure := ADR(DTStructure1));
+	
+	IF DTStructure1.hour >= 6 AND DTStructure1.hour < 20 THEN
+		nightHours := FALSE;
+	ELSE
+		nightHours := TRUE;
+	END_IF
+	
+	IF test THEN
+		nightHours := TRUE;
+	END_IF
+	
+	IF NOT nightHours THEN
+		stateLight := stateOutsideNightHours;
+	END_IF		
+	
 	CASE stateLight OF
 		
-		stateInit:		
-
-			stateLight := stateBeeingAwake;
+		stateOutsideNightHours:
 		
-		stateBeeingAwake:
+			IF stateEntered THEN
+				AsArLogWrite_0.enable := TRUE;
+				AsArLogWrite_0.asciiString := ADR('outside night hours');
+			END_IF				
+			
+			IF nightHours THEN
+				stateLight := stateOutOfBed;
+			END_IF
+		
+			light := FALSE;
+		
+		stateOutOfBed:
 			
 			IF stateEntered THEN
 				AsArLogWrite_0.enable := TRUE;
-				AsArLogWrite_0.asciiString := ADR('beeing awake');
+				AsArLogWrite_0.asciiString := ADR('out of bed');
 			END_IF				
 			
 			TON_0(IN := TRUE, PT := T#1s);	
@@ -58,7 +83,7 @@ PROGRAM _CYCLIC
 			END_IF
 					
 			IF buttonPressed THEN
-				stateLight := stateBeeingAwake;
+				stateLight := stateOutOfBed;
 			END_IF	
 
 		stateFallingAsleep:			
@@ -75,7 +100,7 @@ PROGRAM _CYCLIC
 			END_IF
 			
 			IF buttonPressed THEN
-				stateLight := stateBeeingAwake;
+				stateLight := stateOutOfBed;
 			END_IF		
 
 			light := FALSE;
